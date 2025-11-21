@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Accueil personnalisée</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: url('lune-rouge.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .search-box {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      width: 400px;
+      padding: 10px;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+    }
+    .links a {
+      margin: 0 15px;
+      color: #ffdddd;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .quote, .clock {
+      margin-top: 20px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="search-box">
+    <form action="https://www.google.com/search" method="get">
+      <input type="text" name="q" placeholder="Recherche Google...">
+    </form>
+  </div>
+
+  <div class="links">
+    <a href="https://fr.wikipedia.org" target="_blank">Wikipédia</a>
+    <a href="https://www.youtube.com" target="_blank">YouTube</a>
+    <a href="https://www.lemonde.fr" target="_blank">Le Monde</a>
+  </div>
+
+  <div class="quote" id="quote">Chargement de la citation...</div>
+  <div class="clock" id="clock">--:--:--</div>
+
+  <script>
+    // Horloge en direct
+    function updateClock() {
+      const now = new Date();
+      const time = now.toLocaleTimeString('fr-FR');
+      document.getElementById('clock').textContent = time;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Citation du jour
+    fetch("https://api.quotable.io/random?lang=fr")
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('quote').textContent = `"${data.content}" — ${data.author}`;
+      })
+      .catch(() => {
+        document.getElementById('quote').textContent = "Impossible de charger la citation.";
+      });
+  </script>
+</body>
+</html>
+
